@@ -71,6 +71,10 @@ The portfolio is organized into several sections:
 - **Experience:** Timeline of professional journey
 - **Contact:** Functional form with location map
 
+## My Portfolio
+
+Check out my portfolio online: [https://iamricky17.github.io/portfolio/](https://iamricky17.github.io/portfolio/)
+
 ## Contributing
 
 Contributions are welcome! Please follow these steps:
