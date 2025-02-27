@@ -1,0 +1,758 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Patrick Zablon - Portfolio</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@100..900&family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/three@0.132.2/build/three.min.js"></script>
+    <script src="https://unpkg.com/three@0.132.2/examples/js/postprocessing/EffectComposer.js"></script>
+    <script src="https://unpkg.com/three@0.132.2/examples/js/postprocessing/RenderPass.js"></script>
+    <script src="https://unpkg.com/three@0.132.2/examples/js/postprocessing/ShaderPass.js"></script>
+    <script src="https://unpkg.com/three@0.132.2/examples/js/shaders/CopyShader.js"></script>
+    <link rel='stylesheet' href='assets/css/styles.css'>
+</head>
+<body class="light">
+    <!-- Custom cursor elements -->
+    <div id="custom-cursor"></div>
+    <div id="cursor-ring"></div>
+    <div id="cursor-tag">Guest</div>
+
+    <!-- Canvas Background -->
+    <canvas id="bg-canvas"></canvas>
+    
+    <!-- Navigation Bar -->
+    <nav class="navbar px-4 py-3 flex justify-between items-center">
+        <div class="flex items-center">
+            <a href="#" class="text-xl font-bold"><span class="gradient-text">Patrick.dev</span></a>
+        </div>
+        
+        <!-- Desktop Nav -->
+        <div class="hidden md:flex space-x-6 items-center">
+            <div class="nav-dropdown">
+                <a href="#about" class="hover:text-primary transition-colors flex items-center">
+                    About <i class="fas fa-chevron-down ml-1 text-xs"></i>
+                </a>
+                <div class="dropdown-content">
+                    <a href="#about">Profile</a>
+                    <a href="#skills">Skills</a>
+                    <a href="#experience">Experience</a>
+                </div>
+            </div>
+
+            <div class="nav-dropdown">
+                <a href="#projects" class="hover:text-primary transition-colors flex items-center">
+                    Projects <i class="fas fa-chevron-down ml-1 text-xs"></i>
+                </a>
+                <div class="dropdown-content">
+                    <a href="#traffic-alert">Traffic Alert System</a>
+                    <a href="#lightbulb">LightBulb Toggle IoT</a>
+                    <a href="#youtube-dl">YouTube Downloader</a>
+                </div>
+            </div>
+
+            <div class="nav-dropdown">
+                <a href="#skills" class="hover:text-primary transition-colors flex items-center">
+                    Skills <i class="fas fa-chevron-down ml-1 text-xs"></i>
+                </a>
+                <div class="dropdown-content">
+                    <a href="#languages">Programming Languages</a>
+                    <a href="#frameworks">Frameworks & Tools</a>
+                </div>
+            </div>
+
+            <a href="#contact" class="hover:text-primary transition-colors">Contact</a>
+            
+            <button id="theme-toggle" class="p-2 rounded-full">
+                <i class="fas fa-moon dark:hidden"></i>
+                <i class="fas fa-sun hidden dark:block"></i>
+            </button>
+        </div>
+        
+        <!-- Mobile Nav Button -->
+        <div class="md:hidden flex items-center">
+            <button id="theme-toggle-mobile" class="p-2 rounded-full mr-2">
+                <i class="fas fa-moon dark:hidden"></i>
+                <i class="fas fa-sun hidden dark:block"></i>
+            </button>
+            <button id="menu-btn" class="p-2 rounded-full">
+                <i class="fas fa-bars"></i>
+            </button>
+        </div>
+    </nav>
+    
+    <!-- Mobile Menu -->
+    <div class="overlay" id="overlay"></div>
+    <div class="mobile-menu p-5">
+        <div class="flex justify-end mb-8">
+            <button id="close-menu-btn" class="p-2 rounded-full">
+                <i class="fas fa-times"></i>
+            </button>
+        </div>
+        <div class="flex flex-col space-y-4">
+            <a href="#about" class="text-lg py-2 border-b border-gray-200 dark:border-gray-700">About</a>
+            <a href="#projects" class="text-lg py-2 border-b border-gray-200 dark:border-gray-700">Projects</a>
+            <a href="#skills" class="text-lg py-2 border-b border-gray-200 dark:border-gray-700">Skills</a>
+            <a href="#experience" class="text-lg py-2 border-b border-gray-200 dark:border-gray-700">Experience</a>
+            <a href="#contact" class="text-lg py-2">Contact</a>
+        </div>
+    </div>
+    
+    <!-- Hero Section -->
+    <section class="hero px-4 md:px-16 lg:px-24 pt-20 pb-16">
+        <div class="container mx-auto">
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
+                <div class="animate-fade-in">
+                    <div class="text-sm uppercase tracking-widest text-primary mb-2">Software & UI/UX Engineer</div>
+                    <h1 class="text-4xl md:text-5xl lg:text-6xl font-bold mb-4">
+                        Hi, I'm 
+                        <div class="name-container">
+                            <span class="gradient-text typing-effect inline-block" id="typing-text">Patrick Zablon</span>
+                            <!-- Owner cursor pointing at name -->
+                            <div id="owner-cursor" style="left: 95%; top: 15px;"></div>
+                            <div id="owner-cursor-tag" style="left: 95%; top: 15px;">Patrick</div>
+                        </div>
+                    </h1>
+                    <p class="text-lg mb-6 opacity-80">Engineer, innovator, and tech enthusiast exploring the frontiers of innovation and problem-solving through code.</p>
+                    <div class="flex flex-wrap gap-4">
+                        <a href="#contact" class="btn btn-primary">Get in Touch</a>
+                        <a href="#projects" class="btn btn-outline">View Projects</a>
+                    </div>
+                </div>
+                <div class="animate-fade-in delay-2 flex justify-center">
+                    <div class="profile-image-container relative w-64 h-64 md:w-80 md:h-80">
+                        <div class="absolute inset-0 bg-gradient-to-br from-primary to-green-500 rounded-full opacity-20 blur-2xl"></div>
+                        <img src="assets\images\profile.jpg" alt="Patrick Zablon" class="profile-image relative z-10">
+                        <div class="absolute -top-4 -right-4 z-20 bg-white dark:bg-gray-800 text-primary px-2 py-1 rounded-full shadow-lg transform rotate-12 text-sm font-bold">
+                            <i class="fas fa-code mr-1"></i> Developer
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- About Section -->
+    <section id="about" class="py-16 px-4 md:px-16 lg:px-24">
+        <div class="container mx-auto">
+            <div class="text-center mb-16">
+                <h2 class="text-3xl md:text-4xl font-bold mb-4">About <span class="gradient-text">Me</span></h2>
+                <div class="w-24 h-1 bg-primary mx-auto"></div>
+            </div>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
+                <div>
+                    <p class="mb-4 text-lg">A young motivated, self-driven and strong-willed individual who has a strong passion towards engineering and technology in hopes of tackling world problems and serving the community.</p>
+                    <p class="mb-6 text-lg">I'm currently working as a UI/UX Designer at BodaFasta Tanzania and developing innovative solutions as a HCD Researcher at the World Food Programme.</p>
+                    
+                    <div class="grid grid-cols-2 gap-4 mb-6">
+                        <div>
+                            <h3 class="font-semibold mb-2">Name:</h3>
+                            <p>Patrick Mwikwabe Zablon</p>
+                        </div>
+                        <div>
+                            <h3 class="font-semibold mb-2">Email:</h3>
+                            <p>patrickzablon0@gmail.com</p>
+                        </div>
+                        <div>
+                            <h3 class="font-semibold mb-2">Location:</h3>
+                            <p>Dar es Salaam, Tanzania</p>
+                        </div>
+                        <div>
+                            <h3 class="font-semibold mb-2">Availability:</h3>
+                            <p>Open to collaborate</p>
+                        </div>
+                    </div>
+                    
+                    <div class="flex gap-4">
+                        <a href="https://github.com/iamricky17" target="_blank" class="btn btn-primary">
+                            <i class="fab fa-github mr-2"></i> GitHub
+                        </a>
+                        <a href="https://www.linkedin.com/in/patrick-zablon/" target="_blank" class="btn btn-outline">
+                            <i class="fab fa-linkedin mr-2"></i> LinkedIn
+                        </a>
+                    </div>
+                </div>
+                
+                <div>
+                    <div class="card p-6">
+                        <div class="card-content">
+                            <h3 class="text-xl font-bold mb-4 text-primary">What I Do</h3>
+                            
+                            <div class="space-y-4">
+                                <div class="flex items-start">
+                                    <div class="mr-4 mt-1 text-primary text-xl">
+                                        <i class="fas fa-code"></i>
+                                    </div>
+                                    <div>
+                                        <h4 class="font-semibold mb-1">Programming</h4>
+                                        <p>Creating seamless digital solutions with Python, Java, C, and more.</p>
+                                    </div>
+                                </div>
+                                
+                                <div class="flex items-start">
+                                    <div class="mr-4 mt-1 text-primary text-xl">
+                                        <i class="fas fa-laptop-code"></i>
+                                    </div>
+                                    <div>
+                                        <h4 class="font-semibold mb-1">Web Development</h4>
+                                        <p>Crafting interactive and user-friendly websites with HTML, CSS, JavaScript, and React.js.</p>
+                                    </div>
+                                </div>
+                                
+                                <div class="flex items-start">
+                                    <div class="mr-4 mt-1 text-primary text-xl">
+                                        <i class="fas fa-robot"></i>
+                                    </div>
+                                    <div>
+                                        <h4 class="font-semibold mb-1">AI Projects</h4>
+                                        <p>Building AI-enhanced tools, like chatbots, to make tech accessible to remote communities.</p>
+                                    </div>
+                                </div>
+                                
+                                <div class="flex items-start">
+                                    <div class="mr-4 mt-1 text-primary text-xl">
+                                        <i class="fas fa-paint-brush"></i>
+                                    </div>
+                                    <div>
+                                        <h4 class="font-semibold mb-1">UI/UX Design</h4>
+                                        <p>Creating beautiful, intuitive interfaces that enhance user experience.</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- Projects Section -->
+    <section id="projects" class="py-16 px-4 md:px-16 lg:px-24 bg-gray-50 dark:bg-gray-900">
+        <div class="container mx-auto">
+            <div class="text-center mb-16">
+                <h2 class="text-3xl md:text-4xl font-bold mb-4">My <span class="gradient-text">Projects</span></h2>
+                <div class="w-24 h-1 bg-primary mx-auto"></div>
+                <p class="mt-4 max-w-2xl mx-auto text-lg">Check out some of my recent work and innovations.</p>
+            </div>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <!-- Project 1: Traffic Alert System -->
+                <div id="traffic-alert" class="project-card h-full">
+                    <div class="p-6 flex flex-col h-full">
+                        <div class="project-preview mb-4">
+                            <img src="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iODAwIiBoZWlnaHQ9IjQwMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KICA8ZGVmcz4KICAgIDxsaW5lYXJHcmFkaWVudCBpZD0iYmciIHgxPSIwJSIgeTE9IjAlIiB4Mj0iMTAwJSIgeTI9IjEwMCUiPgogICAgICA8c3RvcCBvZmZzZXQ9IjAlIiBzdHlsZT0ic3RvcC1jb2xvcjojMjgyODI4O3N0b3Atb3BhY2l0eToxIiAvPgogICAgICA8c3RvcCBvZmZzZXQ9IjEwMCUiIHN0eWxlPSJzdG9wLWNvbG9yOiMxMTExMTE7c3RvcC1vcGFjaXR5OjEiIC8+CiAgICA8L2xpbmVhckdyYWRpZW50PgogIDwvZGVmcz4KICA8cmVjdCB3aWR0aD0iODAwIiBoZWlnaHQ9IjQwMCIgZmlsbD0idXJsKCNiZykiLz4KICA8ZyBmaWxsPSIjMDBhODRmIj4KICAgIDxjaXJjbGUgY3g9IjQwMCIgY3k9IjIwMCIgcj0iNjAiIGZpbGw9IiNmZjY0MDAiIG9wYWNpdHk9IjAuOCIvPgogICAgPHJlY3QgeD0iMzcwIiB5PSIxMDAiIHdpZHRoPSI2MCIgaGVpZ2h0PSIxNTAiIGZpbGw9IiMzMzMiLz4KICAgIDxwb2x5Z29uIHBvaW50cz0iMzUwLDEwMCA0NTAsMTAwIDUwMCw1MCAzMDAsNTAiIGZpbGw9IiM0NDQiLz4KICAgIDxyZWN0IHg9IjEwMCIgeT0iMzAwIiB3aWR0aD0iNjAwIiBoZWlnaHQ9IjIwIiBmaWxsPSIjNTU1Ii8+CiAgICA8cmVjdCB4PSIyMDAiIHk9IjI4MCIgd2lkdGg9IjgwIiBoZWlnaHQ9IjQwIiByeD0iNSIgcnk9IjUiIGZpbGw9IiMzMzMzZmYiLz4KICAgIDxyZWN0IHg9IjUwMCIgeT0iMjgwIiB3aWR0aD0iODAiIGhlaWdodD0iNDAiIHJ4PSI1IiByeT0iNSIgZmlsbD0iIzMzYWEzMyIvPgogICAgPGNpcmNsZSBjeD0iMjAwIiBjeT0iMzMwIiByPSIxMCIgZmlsbD0iIzMzMyIvPgogICAgPGNpcmNsZSBjeD0iMjgwIiBjeT0iMzMwIiByPSIxMCIgZmlsbD0iIzMzMyIvPgogICAgPGNpcmNsZSBjeD0iNTAwIiBjeT0iMzMwIiByPSIxMCIgZmlsbD0iIzMzMyIvPgogICAgPGNpcmNsZSBjeD0iNTgwIiBjeT0iMzMwIiByPSIxMCIgZmlsbD0iIzMzMyIvPgogICAgPHRleHQgeD0iNDAwIiB5PSIxNzAiIGZvbnQtZmFtaWx5PSJBcmlhbCIgZm9udC1zaXplPSIxNCIgdGV4dC1hbmNob3I9Im1pZGRsZSIgZmlsbD0id2hpdGUiPlRSQUZGSUMgTElHSFQ8L3RleHQ+CiAgICA8dGV4dCB4PSI0MDAiIHk9IjM1MCIgZm9udC1mYW1pbHk9IkFyaWFsIiBmb250LXNpemU9IjE4IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSI+VHJhZmZpYyBBbGVydCBTeXN0ZW08L3RleHQ+CiAgICA8dGV4dCB4PSIyNDAiIHk9IjMwNSIgZm9udC1mYW1pbHk9IkFyaWFsIiBmb250LXNpemU9IjEyIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSI+Q2FyczogMTc2PC90ZXh0PgogICAgPHRleHQgeD0iNTQwIiB5PSIzMDUiIGZvbnQtZmFtaWx5PSJBcmlhbCIgZm9udC1zaXplPSIxMiIgdGV4dC1hbmNob3I9Im1pZGRsZSIgZmlsbD0id2hpdGUiPlRydWNrczogNTU8L3RleHQ+CiAgPC9nPgo8L3N2Zz4=" alt="Traffic Alert System Preview">
+                        </div>
+                        <div class="mb-4 text-primary text-3xl">
+                            <i class="fas fa-traffic-light"></i>
+                        </div>
+                        <h3 class="text-xl font-bold mb-2">Traffic Alert System</h3>
+                        <h5 class="text-sm text-gray-500 dark:text-gray-400 mb-4">Africa's Talking Hackathon Winner</h5>
+                        <p class="mb-4 flex-grow">Real-time traffic detection system using YOLO and Raspberry Pi to provide traffic updates via SMS.</p>
+                        <div class="flex flex-wrap gap-2 mb-4">
+                            <span class="px-3 py-1 bg-primary bg-opacity-10 text-primary rounded-full text-sm">IoT</span>
+                            <span class="px-3 py-1 bg-primary bg-opacity-10 text-primary rounded-full text-sm">AI</span>
+                            <span class="px-3 py-1 bg-primary bg-opacity-10 text-primary rounded-full text-sm">FastAPI</span>
+                            <span class="px-3 py-1 bg-primary bg-opacity-10 text-primary rounded-full text-sm">WebSockets</span>
+                        </div>
+                        <a href="https://github.com/iamricky17/traffic-alert-system-africastalking-hackathon" target="_blank" class="text-primary hover:underline inline-flex items-center">
+                            View on GitHub <i class="fas fa-arrow-right ml-1"></i>
+                        </a>
+                    </div>
+                </div>
+                
+                <!-- Project 2: LightBulb Toggle IoT -->
+                <div id="lightbulb" class="project-card h-full">
+                    <div class="p-6 flex flex-col h-full">
+                        <div class="project-preview mb-4">
+                            <img src="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iODAwIiBoZWlnaHQ9IjQwMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KICA8ZGVmcz4KICAgIDxsaW5lYXJHcmFkaWVudCBpZD0iYmciIHgxPSIwJSIgeTE9IjAlIiB4Mj0iMTAwJSIgeTI9IjEwMCUiPgogICAgICA8c3RvcCBvZmZzZXQ9IjAlIiBzdHlsZT0ic3RvcC1jb2xvcjojMDIwMzA1O3N0b3Atb3BhY2l0eToxIiAvPgogICAgICA8c3RvcCBvZmZzZXQ9IjEwMCUiIHN0eWxlPSJzdG9wLWNvbG9yOiMwMDA0MDU7c3RvcC1vcGFjaXR5OjEiIC8+CiAgICA8L2xpbmVhckdyYWRpZW50PgogIDwvZGVmcz4KICA8cmVjdCB3aWR0aD0iODAwIiBoZWlnaHQ9IjQwMCIgZmlsbD0idXJsKCNiZykiLz4KICA8ZyBmaWxsPSIjZmZmZmZmIj4KICAgIDxlbGxpcHNlIGN4PSI0MDAiIGN5PSIxNjAiIHJ4PSI4MCIgcnk9IjgwIiBmaWxsPSIjZmZmZjAwIiBvcGFjaXR5PSIwLjkiPgogICAgICA8YW5pbWF0ZSBhdHRyaWJ1dGVOYW1lPSJvcGFjaXR5IiB2YWx1ZXM9IjAuOTswLjI7MC45IiBkdXI9IjJzIiByZXBlYXRDb3VudD0iaW5kZWZpbml0ZSIgLz4KICAgIDwvZWxsaXBzZT4KICAgIDxwYXRoIGQ9Ik0zNjAsMjQwIEw0NDAsMjQwIEw0MzAsMzAwIEwzNzAsMzAwIFoiIGZpbGw9IiM3Nzc3NzciLz4KICAgIDxwYXRoIGQ9Ik0zODAsMzAwIEw0MjAsMzAwIEw0MTUsMzIwIEwzODUsMzIwIFoiIGZpbGw9IiM1NTU1NTUiLz4KICAgIDxyZWN0IHg9IjMzMCIgeT0iMzIwIiB3aWR0aD0iMTQwIiBoZWlnaHQ9IjIwIiByeD0iNCIgcnk9IjQiIGZpbGw9IiNhYWFhYWEiLz4KICAgIDxsaW5lIHgxPSI0MDAiIHkxPSIyNDAiIHgyPSI0MDAiIHkyPSIzMjAiIHN0cm9rZT0iIzk5OTk5OSIgc3Ryb2tlLXdpZHRoPSIyIiBzdHJva2UtZGFzaGFycmF5PSI1LDUiLz4KICAgIDwhLS0gTGlnaHQgcmF5cyAtLT4KICAgIDxnIG9wYWNpdHk9IjAuNyI+CiAgICAgIDxsaW5lIHgxPSI0MDAiIHkxPSI4MCIgeDI9IjQwMCIgeTI9IjQwIiBzdHJva2U9IiNmZmZmMDAiIHN0cm9rZS13aWR0aD0iNCIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIj4KICAgICAgICA8YW5pbWF0ZSBhdHRyaWJ1dGVOYW1lPSJvcGFjaXR5IiB2YWx1ZXM9IjAuNzsxOzAuNyIgZHVyPSIyLjVzIiByZXBlYXRDb3VudD0iaW5kZWZpbml0ZSIgLz4KICAgICAgPC9saW5lPgogICAgICA8bGluZSB4MT0iNDgwIiB5MT0iMTYwIiB4Mj0iNTIwIiB5Mj0iMTYwIiBzdHJva2U9IiNmZmZmMDAiIHN0cm9rZS13aWR0aD0iNCIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIj4KICAgICAgICA8YW5pbWF0ZSBhdHRyaWJ1dGVOYW1lPSJvcGFjaXR5IiB2YWx1ZXM9IjAuNzsxOzAuNyIgZHVyPSIyLjFzIiByZXBlYXRDb3VudD0iaW5kZWZpbml0ZSIgLz4KICAgICAgPC9saW5lPgogICAgICA8bGluZSB4MT0iMzIwIiB5MT0iMTYwIiB4Mj0iMjgwIiB5Mj0iMTYwIiBzdHJva2U9IiNmZmZmMDAiIHN0cm9rZS13aWR0aD0iNCIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIj4KICAgICAgICA8YW5pbWF0ZSBhdHRyaWJ1dGVOYW1lPSJvcGFjaXR5IiB2YWx1ZXM9IjAuNzsxOzAuNyIgZHVyPSIyLjNzIiByZXBlYXRDb3VudD0iaW5kZWZpbml0ZSIgLz4KICAgICAgPC9saW5lPgogICAgICA8bGluZSB4MT0iNDYwIiB5MT0iMTAwIiB4Mj0iNDkwIiB5Mj0iNzAiIHN0cm9rZT0iI2ZmZmYwMCIgc3Ryb2tlLXdpZHRoPSI0IiBzdHJva2UtbGluZWNhcD0icm91bmQiPgogICAgICAgIDxhbmltYXRlIGF0dHJpYnV0ZU5hbWU9Im9wYWNpdHkiIHZhbHVlcz0iMC43OzE7MC43IiBkdXI9IjIuN3MiIHJlcGVhdENvdW50PSJpbmRlZmluaXRlIiAvPgogICAgICA8L2xpbmU+CiAgICAgIDxsaW5lIHgxPSIzNDAiIHkxPSIxMDAiIHgyPSIzMTAiIHkyPSI3MCIgc3Ryb2tlPSIjZmZmZjAwIiBzdHJva2Utd2lkdGg9IjQiIHN0cm9rZS1saW5lY2FwPSJyb3VuZCI+CiAgICAgICAgPGFuaW1hdGUgYXR0cmlidXRlTmFtZT0ib3BhY2l0eSIgdmFsdWVzPSIwLjc7MTswLjciIGR1cj0iMi45cyIgcmVwZWF0Q291bnQ9ImluZGVmaW5pdGUiIC8+CiAgICAgIDwvbGluZT4KICAgIDwvZz4KICAgIDx0ZXh0IHg9IjQwMCIgeT0iMzYwIiBmb250LWZhbWlseT0iQXJpYWwiIGZvbnQtc2l6ZT0iMjAiIHRleHQtYW5jaG9yPSJtaWRkbGUiIGZpbGw9IndoaXRlIj5MaWdodEJ1bGIgVG9nZ2xlIElvVCBEZW1vPC90ZXh0PgogIDwvZz4KPC9zdmc+" alt="LightBulb Toggle IoT Preview">
+                        </div>
+                        <div class="mb-4 text-primary text-3xl">
+                            <i class="fas fa-lightbulb"></i>
+                        </div>
+                        <h3 class="text-xl font-bold mb-2">LightBulb Toggle</h3>
+                        <h5 class="text-sm text-gray-500 dark:text-gray-400 mb-4">IoT Simulation Project</h5>
+                        <p class="mb-4 flex-grow">An IoT-based web app that simulates controlling a light bulb by toggling its state and background color on clicks.</p>
+                        <div class="flex flex-wrap gap-2 mb-4">
+                            <span class="px-3 py-1 bg-primary bg-opacity-10 text-primary rounded-full text-sm">HTML</span>
+                            <span class="px-3 py-1 bg-primary bg-opacity-10 text-primary rounded-full text-sm">CSS</span>
+                            <span class="px-3 py-1 bg-primary bg-opacity-10 text-primary rounded-full text-sm">JavaScript</span>
+                            <span class="px-3 py-1 bg-primary bg-opacity-10 text-primary rounded-full text-sm">IoT</span>
+                        </div>
+                        <a href="https://github.com/iamricky17/LightBulb_Toggle-IoT-AfricasTalkingHackathon" target="_blank" class="text-primary hover:underline inline-flex items-center">
+                            View on GitHub <i class="fas fa-arrow-right ml-1"></i>
+                        </a>
+                    </div>
+                </div>
+                
+                <!-- Project 3: YouTube Downloader -->
+                <div id="youtube-dl" class="project-card h-full">
+                    <div class="p-6 flex flex-col h-full">
+                        <div class="project-preview mb-4">
+                            <img src="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iODAwIiBoZWlnaHQ9IjQwMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KICA8ZGVmcz4KICAgIDxsaW5lYXJHcmFkaWVudCBpZD0iYmciIHgxPSIwJSIgeTE9IjAlIiB4Mj0iMTAwJSIgeTI9IjEwMCUiPgogICAgICA8c3RvcCBvZmZzZXQ9IjAlIiBzdHlsZT0ic3RvcC1jb2xvcjojZmZmZmZmO3N0b3Atb3BhY2l0eToxIiAvPgogICAgICA8c3RvcCBvZmZzZXQ9IjEwMCUiIHN0eWxlPSJzdG9wLWNvbG9yOiNmNGY0Zjg7c3RvcC1vcGFjaXR5OjEiIC8+CiAgICA8L2xpbmVhckdyYWRpZW50PgogIDwvZGVmcz4KICA8cmVjdCB3aWR0aD0iODAwIiBoZWlnaHQ9IjQwMCIgZmlsbD0idXJsKCNiZykiLz4KICA8ZyBmaWxsPSIjMzMzIj4KICAgIDxyZWN0IHg9IjE1MCIgeT0iNzAiIHdpZHRoPSI1MDAiIGhlaWdodD0iMjgwIiByeD0iMTAiIHJ5PSIxMCIgZmlsbD0iI2ZmZmZmZiIgc3Ryb2tlPSIjZTBlMGUwIiBzdHJva2Utd2lkdGg9IjIiLz4KICAgIDxyZWN0IHg9IjE4MCIgeT0iMTIwIiB3aWR0aD0iNDQwIiBoZWlnaHQ9IjQwIiByeD0iNCIgcnk9IjQiIGZpbGw9IiNmOGY4ZjgiIHN0cm9rZT0iI2UwZTBlMCIgc3Ryb2tlLXdpZHRoPSIxIi8+CiAgICA8Y2lyY2xlIGN4PSI2MDAiIGN5PSIxNDAiIHI9IjEwIiBmaWxsPSIjMDBhODRmIi8+CiAgICA8cmVjdCB4PSIxODAiIHk9IjE5MCIgd2lkdGg9IjE1MCIgaGVpZ2h0PSIzMCIgcng9IjQiIHJ5PSI0IiBmaWxsPSIjZjhmOGY4IiBzdHJva2U9IiNlMGUwZTAiIHN0cm9rZS13aWR0aD0iMSIvPgogICAgPHJlY3QgeD0iMzgwIiB5PSIxOTAiIHdpZHRoPSIxNTAiIGhlaWdodD0iMzAiIHJ4PSI0IiByeT0iNCIgZmlsbD0iI2Y4ZjhmOCIgc3Ryb2tlPSIjZTBlMGUwIiBzdHJva2Utd2lkdGg9IjEiLz4KICAgIDxyZWN0IHg9IjE4MCIgeT0iMjUwIiB3aWR0aD0iMTUwIiBoZWlnaHQ9IjMwIiByeD0iNCIgcnk9IjQiIGZpbGw9IiMwMGE4NGYiLz4KICAgIDxyZWN0IHg9IjM4MCIgeT0iMjUwIiB3aWR0aD0iMTUwIiBoZWlnaHQ9IjMwIiByeD0iNCIgcnk9IjQiIGZpbGw9IiMzMzMzMzMiLz4KICAgIDwhLS0gWW91VHViZSBJY29uIC0tPgogICAgPHJlY3QgeD0iMjAwIiB5PSIxMzAiIHdpZHRoPSIyNSIgaGVpZ2h0PSIyMCIgcng9IjUiIHJ5PSI1IiBmaWxsPSIjZmYwMDAwIi8+CiAgICA8cG9seWdvbiBwb2ludHM9IjIwOCwxMzUgMjE1LDE0MCAyMDgsMTQ1IiBmaWxsPSJ3aGl0ZSIvPgogICAgPHRleHQgeD0iNDAwIiB5PSIxMDAiIGZvbnQtZmFtaWx5PSJBcmlhbCIgZm9udC1zaXplPSIyMCIgdGV4dC1hbmNob3I9Im1pZGRsZSIgZmlsbD0iIzMzMyI+WW91VHViZSBEb3dubG9hZGVyPC90ZXh0PgogICAgPHRleHQgeD0iMjQwIiB5PSIxMzkiIGZvbnQtZmFtaWx5PSJBcmlhbCIgZm9udC1zaXplPSIxMiIgZmlsbD0iIzc3NyI+aHR0cHM6Ly95b3V0dS5iZS9fZXhhbXBsZV88L3RleHQ+CiAgICA8dGV4dCB4PSIyNTUiIHk9IjIxMCIgZm9udC1mYW1pbHk9IkFyaWFsIiBmb250LXNpemU9IjEyIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSIjNzc3Ij5WaWRlbyBRdWFsaXR5PC90ZXh0PgogICAgPHRleHQgeD0iNDU1IiB5PSIyMTAiIGZvbnQtZmFtaWx5PSJBcmlhbCIgZm9udC1zaXplPSIxMiIgdGV4dC1hbmNob3I9Im1pZGRsZSIgZmlsbD0iIzc3NyI+U3VidGl0bGU8L3RleHQ+CiAgICA8dGV4dCB4PSIyNTUiIHk9IjI3MCIgZm9udC1mYW1pbHk9IkFyaWFsIiBmb250LXNpemU9IjEyIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSI+RG93bmxvYWQ8L3RleHQ+CiAgICA8dGV4dCB4PSI0NTUiIHk9IjI3MCIgZm9udC1mYW1pbHk9IkFyaWFsIiBmb250LXNpemU9IjEyIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSI+Q2FuY2VsPC90ZXh0PgogIDwvZz4KPC9zdmc+" alt="YouTube Downloader Preview">
+                        </div>
+                        <div class="mb-4 text-primary text-3xl">
+                            <i class="fab fa-youtube"></i>
+                        </div>
+                        <h3 class="text-xl font-bold mb-2">YouTube Downloader</h3>
+                        <h5 class="text-sm text-gray-500 dark:text-gray-400 mb-4">Cross-Platform Application</h5>
+                        <p class="mb-4 flex-grow">A lightweight tool to download YouTube videos and subtitles, providing multiple quality options and subtitle support.</p>
+                        <div class="flex flex-wrap gap-2 mb-4">
+                            <span class="px-3 py-1 bg-primary bg-opacity-10 text-primary rounded-full text-sm">Python</span>
+                            <span class="px-3 py-1 bg-primary bg-opacity-10 text-primary rounded-full text-sm">JavaScript</span>
+                            <span class="px-3 py-1 bg-primary bg-opacity-10 text-primary rounded-full text-sm">HTML/CSS</span>
+                            <span class="px-3 py-1 bg-primary bg-opacity-10 text-primary rounded-full text-sm">yt-dlp</span>
+                        </div>
+                        <a href="https://github.com/iamricky17/youtube-downloader" target="_blank" class="text-primary hover:underline inline-flex items-center">
+                            View on GitHub <i class="fas fa-arrow-right ml-1"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- Skills Section -->
+    <section id="skills" class="py-16 px-4 md:px-16 lg:px-24">
+        <div class="container mx-auto">
+            <div class="text-center mb-16">
+                <h2 class="text-3xl md:text-4xl font-bold mb-4">Technical <span class="gradient-text">Skills</span></h2>
+                <div class="w-24 h-1 bg-primary mx-auto"></div>
+                <p class="mt-4 max-w-2xl mx-auto text-lg">Here are some of the technologies and tools I work with.</p>
+            </div>
+            
+            <!-- Languages -->
+            <div id="languages" class="mb-12">
+                <h3 class="text-2xl font-bold mb-6 text-center">Languages</h3>
+                <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-4 justify-center">
+                    <div class="card p-4 flex flex-col items-center">
+                        <div class="tech-icon mb-3 python-icon">
+                            <i class="fab fa-python"></i>
+                        </div>
+                        <span>Python</span>
+                    </div>
+                    <div class="card p-4 flex flex-col items-center">
+                        <div class="tech-icon mb-3 java-icon">
+                            <i class="fab fa-java"></i>
+                        </div>
+                        <span>Java</span>
+                    </div>
+                    <div class="card p-4 flex flex-col items-center">
+                        <div class="tech-icon mb-3 js-icon">
+                            <i class="fab fa-js"></i>
+                        </div>
+                        <span>JavaScript</span>
+                    </div>
+                    <div class="card p-4 flex flex-col items-center">
+                        <div class="tech-icon mb-3 c-icon">
+                            <span class="text-xl">C</span>
+                        </div>
+                        <span>C</span>
+                    </div>
+                    <div class="card p-4 flex flex-col items-center">
+                        <div class="tech-icon mb-3 html-icon">
+                            <i class="fab fa-html5"></i>
+                        </div>
+                        <span>HTML</span>
+                    </div>
+                    <div class="card p-4 flex flex-col items-center">
+                        <div class="tech-icon mb-3 css-icon">
+                            <i class="fab fa-css3-alt"></i>
+                        </div>
+                        <span>CSS</span>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Frameworks & Tools -->
+            <div id="frameworks" class="mb-12">
+                <h3 class="text-2xl font-bold mb-6 text-center">Frameworks, Tools & Libraries</h3>
+                <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-4 justify-center">
+                    <div class="card p-4 flex flex-col items-center">
+                        <div class="tech-icon mb-3 react-icon">
+                            <i class="fab fa-react"></i>
+                        </div>
+                        <span>React.js</span>
+                    </div>
+                    <div class="card p-4 flex flex-col items-center">
+                        <div class="tech-icon mb-3 laravel-icon">
+                            <i class="fab fa-laravel"></i>
+                        </div>
+                        <span>Laravel</span>
+                    </div>
+                    <div class="card p-4 flex flex-col items-center">
+                        <div class="tech-icon mb-3 git-icon">
+                            <i class="fab fa-git-alt"></i>
+                        </div>
+                        <span>Git</span>
+                    </div>
+                    <div class="card p-4 flex flex-col items-center">
+                        <div class="tech-icon mb-3 figma-icon">
+                            <i class="fab fa-figma"></i>
+                        </div>
+                        <span>Figma</span>
+                    </div>
+                    <div class="card p-4 flex flex-col items-center">
+                        <div class="tech-icon mb-3 canva-icon">
+                            <i class="fas fa-palette"></i>
+                        </div>
+                        <span>Canva</span>
+                    </div>
+                    <div class="card p-4 flex flex-col items-center">
+                        <div class="tech-icon mb-3 hcd-icon">
+                            <i class="fas fa-users"></i>
+                        </div>
+                        <span>HCD</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Soft Skills -->
+            <div>
+                <h3 class="text-2xl font-bold mb-6 text-center">Soft Skills</h3>
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+                    <div class="card p-5 text-center">
+                        <div class="w-12 h-12 rounded-full bg-primary bg-opacity-10 flex items-center justify-center mx-auto mb-3">
+                            <i class="fas fa-users text-primary text-xl"></i>
+                        </div>
+                        <h4 class="font-bold mb-2">Team Collaboration</h4>
+                        <p>Excel in diverse team environments and find common ground to achieve project goals.</p>
+                    </div>
+                    <div class="card p-5 text-center">
+                        <div class="w-12 h-12 rounded-full bg-primary bg-opacity-10 flex items-center justify-center mx-auto mb-3">
+                            <i class="fas fa-lightbulb text-primary text-xl"></i>
+                        </div>
+                        <h4 class="font-bold mb-2">Problem-Solving</h4>
+                        <p>Solve complex engineering challenges with innovative thinking and creative solutions.</p>
+                    </div>
+                    <div class="card p-5 text-center">
+                        <div class="w-12 h-12 rounded-full bg-primary bg-opacity-10 flex items-center justify-center mx-auto mb-3">
+                            <i class="fas fa-comments text-primary text-xl"></i>
+                        </div>
+                        <h4 class="font-bold mb-2">Communication</h4>
+                        <p>Clearly express technical concepts to both technical and non-technical stakeholders.</p>
+                    </div>
+                    <div class="card p-5 text-center">
+                        <div class="w-12 h-12 rounded-full bg-primary bg-opacity-10 flex items-center justify-center mx-auto mb-3">
+                            <i class="fas fa-tasks text-primary text-xl"></i>
+                        </div>
+                        <h4 class="font-bold mb-2">Project Management</h4>
+                        <p>Plan, organize, and execute projects efficiently to meet deadlines and objectives.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- Experience Section -->
+    <section id="experience" class="py-16 px-4 md:px-16 lg:px-24 bg-gray-50 dark:bg-gray-900">
+        <div class="container mx-auto">
+            <div class="text-center mb-16">
+                <h2 class="text-3xl md:text-4xl font-bold mb-4"><span class="gradient-text">Experience</span> & Education</h2>
+                <div class="w-24 h-1 bg-primary mx-auto"></div>
+                <p class="mt-4 max-w-2xl mx-auto text-lg">My professional journey and educational background.</p>
+            </div>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                <!-- Experience Column -->
+                <div>
+                    <h3 class="text-2xl font-bold mb-6 flex items-center">
+                        <i class="fas fa-briefcase mr-3 text-primary"></i> Work Experience
+                    </h3>
+                    
+                    <div class="space-y-8">
+                        <!-- Job 1 -->
+                        <div class="card p-6 relative">
+                            <div class="card-content">
+                                <div class="absolute top-6 right-6 text-primary">
+                                    <i class="fas fa-paint-brush"></i>
+                                </div>
+                                <h4 class="text-xl font-bold mb-1">UI/UX Designer</h4>
+                                <h5 class="text-primary mb-2">BodaFasta Tanzania</h5>
+                                <p class="text-sm mb-4">Jan 2025 - Present</p>
+                                <p>Working on designing user interfaces for a transportation app revolutionizing motorcycle rides in Tanzania.</p>
+                            </div>
+                        </div>
+                        
+                        <!-- Job 2 -->
+                        <div class="card p-6 relative">
+                            <div class="card-content">
+                                <div class="absolute top-6 right-6 text-primary">
+                                    <i class="fas fa-code"></i>
+                                </div>
+                                <h4 class="text-xl font-bold mb-1">Software Engineer</h4>
+                                <h5 class="text-primary mb-2">Y4C Innovation Hub</h5>
+                                <p class="text-sm mb-4">Oct 2024 - Present</p>
+                                <p>Attending meetups, conducting HCD challenges with WFP Tanzania, tracking progress reports, and presenting updates.</p>
+                            </div>
+                        </div>
+                        
+                        <!-- Job 3 -->
+                        <div class="card p-6 relative">
+                            <div class="card-content">
+                                <div class="absolute top-6 right-6 text-primary">
+                                    <i class="fas fa-truck"></i>
+                                </div>
+                                <h4 class="text-xl font-bold mb-1">HCD Researcher & Project Developer</h4>
+                                <h5 class="text-primary mb-2">World Food Programme</h5>
+                                <p class="text-sm mb-4">Aug 2024 - Present</p>
+                                <p>Working on the Food Cargo Tracking System as part of WFP's SDG 2 Zero Hunger initiative, applying Human-Centered Design methodology.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Education Column -->
+                <div>
+                    <h3 class="text-2xl font-bold mb-6 flex items-center">
+                        <i class="fas fa-graduation-cap mr-3 text-primary"></i> Education
+                    </h3>
+                    
+                    <div class="space-y-8">
+                        <!-- Education 1 -->
+                        <div class="card p-6 relative">
+                            <div class="card-content">
+                                <div class="absolute top-6 right-6 text-primary">
+                                    <i class="fas fa-school"></i>
+                                </div>
+                                <h4 class="text-xl font-bold mb-1">Advanced Certificate of Secondary Education</h4>
+                                <h5 class="text-primary mb-2">Mzumbe Secondary School</h5>
+                                <p class="text-sm mb-4">Jul 2021 - May 2023</p>
+                                <p>Physics, Chemistry, Advanced Mathematics (PCM)</p>
+                                <div class="mt-3">
+                                    <h6 class="font-semibold mb-1">Activities:</h6>
+                                    <ul class="list-disc pl-5 space-y-1">
+                                        <li>Table Tennis Captain (Form 5 & 6)</li>
+                                        <li>Student Government</li>
+                                        <li>Lead Singer, TYCS Choir</li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Education 2 -->
+                        <div class="card p-6 relative">
+                            <div class="card-content">
+                                <div class="absolute top-6 right-6 text-primary">
+                                    <i class="fas fa-school"></i>
+                                </div>
+                                <h4 class="text-xl font-bold mb-1">Certificate of Secondary Education</h4>
+                                <h5 class="text-primary mb-2">Ilboru Secondary School</h5>
+                                <p class="text-sm mb-4">Jan 2017 - Dec 2020</p>
+                                <div class="mt-3">
+                                    <h6 class="font-semibold mb-1">Activities:</h6>
+                                    <ul class="list-disc pl-5 space-y-1">
+                                        <li>Table Tennis Team Captain (Form 3 - Form 4)</li>
+                                        <li>Student Government</li>
+                                        <li>STEM Club</li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Awards -->
+                        <div class="card p-6 relative">
+                            <div class="card-content">
+                                <div class="absolute top-6 right-6 text-primary">
+                                    <i class="fas fa-award"></i>
+                                </div>
+                                <h4 class="text-xl font-bold mb-4">Awards & Honors</h4>
+                                
+                                <div class="space-y-4">
+                                    <div>
+                                        <h5 class="font-semibold">7th Cohort Mo Dewji Scholars Programme (MSP) Recipient</h5>
+                                        <p class="text-sm text-primary">Mo Dewji Foundation - Tanzania · Nov 2023</p>
+                                        <p class="mt-1">Awarded a fully funded scholarship as one of 20 recipients selected from over 7,200 applicants.</p>
+                                    </div>
+                                    
+                                    <div>
+                                        <h5 class="font-semibold">Certificate for Academic Excellence</h5>
+                                        <p class="text-sm text-primary">Mzumbe Secondary School · Apr 2023</p>
+                                        <p class="mt-1">Best Student in Advanced Mathematics, A-Levels (Form 5 & 6)</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- GitHub Stats Section -->
+    <section class="py-16 px-4 md:px-16 lg:px-24">
+        <div class="container mx-auto">
+            <div class="text-center mb-16">
+                <h2 class="text-3xl md:text-4xl font-bold mb-4">GitHub <span class="gradient-text">Stats</span></h2>
+                <div class="w-24 h-1 bg-primary mx-auto"></div>
+                <p class="mt-4 max-w-2xl mx-auto text-lg">Some highlights from my GitHub profile.</p>
+            </div>
+            
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                <div class="stat-card">
+                    <div class="text-4xl font-bold text-primary mb-2">500+</div>
+                    <div class="text-lg">Contributions</div>
+                </div>
+                
+                <div class="stat-card">
+                    <div class="text-4xl font-bold text-primary mb-2">10+</div>
+                    <div class="text-lg">Repositories</div>
+                </div>
+                
+                <div class="stat-card">
+                    <div class="text-4xl font-bold text-primary mb-2">3</div>
+                    <div class="text-lg">Hackathon Wins</div>
+                </div>
+            </div>
+            
+            <div class="mt-12 card p-6 text-center">
+                <div class="card-content">
+                    <h3 class="text-xl font-bold mb-4">Want to see more?</h3>
+                    <p class="mb-6">Check out my GitHub profile for more projects and contributions</p>
+                    <a href="https://github.com/iamricky17" target="_blank" class="btn btn-primary inline-flex items-center">
+                        <i class="fab fa-github mr-2"></i> Visit GitHub Profile
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- Contact Section -->
+    <section id="contact" class="py-16 px-4 md:px-16 lg:px-24 bg-gray-50 dark:bg-gray-900">
+        <div class="container mx-auto">
+            <div class="text-center mb-16">
+                <h2 class="text-3xl md:text-4xl font-bold mb-4">Get In <span class="gradient-text">Touch</span></h2>
+                <div class="w-24 h-1 bg-primary mx-auto"></div>
+                <p class="mt-4 max-w-2xl mx-auto text-lg">I'm always open to collaborating on projects in web development, AI, or open-source contributions.</p>
+            </div>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                <div class="card p-6 flex flex-col h-full">
+                    <div class="card-content">
+                        <h3 class="text-xl font-bold mb-6">Contact Information</h3>
+                        
+                        <div class="space-y-4 mb-6">
+                            <div class="flex items-start">
+                                <div class="w-10 h-10 rounded-full bg-primary bg-opacity-10 flex items-center justify-center mr-4">
+                                    <i class="fas fa-envelope text-primary"></i>
+                                </div>
+                                <div>
+                                    <h4 class="font-semibold">Email</h4>
+                                    <a href="mailto:patrickzablon0@gmail.com" class="hover:text-primary transition-colors">patrickzablon0@gmail.com</a>
+                                </div>
+                            </div>
+                            
+                            <div class="flex items-start">
+                                <div class="w-10 h-10 rounded-full bg-primary bg-opacity-10 flex items-center justify-center mr-4">
+                                    <i class="fas fa-map-marker-alt text-primary"></i>
+                                </div>
+                                <div>
+                                    <h4 class="font-semibold">Location</h4>
+                                    <p>CoICT, University of Dar es Salaam, Tanzania</p>
+                                </div>
+                            </div>
+                            
+                            <div class="flex items-start">
+                                <div class="w-10 h-10 rounded-full bg-primary bg-opacity-10 flex items-center justify-center mr-4">
+                                    <i class="fab fa-linkedin text-primary"></i>
+                                </div>
+                                <div>
+                                    <h4 class="font-semibold">LinkedIn</h4>
+                                    <a href="https://www.linkedin.com/in/patrick-zablon/" target="_blank" class="hover:text-primary transition-colors">linkedin.com/in/patrick-zablon</a>
+                                </div>
+                            </div>
+                            
+                            <div class="flex items-start">
+                                <div class="w-10 h-10 rounded-full bg-primary bg-opacity-10 flex items-center justify-center mr-4">
+                                    <i class="fab fa-github text-primary"></i>
+                                </div>
+                                <div>
+                                    <h4 class="font-semibold">GitHub</h4>
+                                    <a href="https://github.com/iamricky17" target="_blank" class="hover:text-primary transition-colors">github.com/iamricky17</a>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="map-container mt-6">
+                            <!-- Map showing CoICT UDSM location -->
+                            <div id="map" style="width: 100%; height: 100%;"></div>
+                        </div>
+                        
+                        <div class="mt-6">
+                            <h4 class="font-semibold mb-2">Let's connect:</h4>
+                            <div class="flex space-x-4">
+                                <a href="https://github.com/iamricky17" target="_blank" class="w-10 h-10 rounded-full bg-primary bg-opacity-10 flex items-center justify-center text-primary hover:bg-primary hover:text-white transition-colors">
+                                    <i class="fab fa-github"></i>
+                                </a>
+                                <a href="https://www.linkedin.com/in/patrick-zablon/" target="_blank" class="w-10 h-10 rounded-full bg-primary bg-opacity-10 flex items-center justify-center text-primary hover:bg-primary hover:text-white transition-colors">
+                                    <i class="fab fa-linkedin-in"></i>
+                                </a>
+                                <a href="mailto:patrickzablon0@gmail.com" class="w-10 h-10 rounded-full bg-primary bg-opacity-10 flex items-center justify-center text-primary hover:bg-primary hover:text-white transition-colors">
+                                    <i class="fas fa-envelope"></i>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="card p-6">
+                    <div class="card-content">
+                        <h3 class="text-xl font-bold mb-6">Send Me a Message</h3>
+                        
+                        <form id="contact-form">
+                            <div class="mb-4">
+                                <label for="name" class="block mb-2 font-medium">Name</label>
+                                <input type="text" id="name" class="w-full px-4 py-2 rounded-lg border focus:outline-none focus:ring-2 focus:ring-primary text-base dark:bg-gray-800 dark:border-gray-700" placeholder="Your name" required>
+                            </div>
+                            
+                            <div class="mb-4">
+                                <label for="email" class="block mb-2 font-medium">Email</label>
+                                <input type="email" id="email" class="w-full px-4 py-2 rounded-lg border focus:outline-none focus:ring-2 focus:ring-primary text-base dark:bg-gray-800 dark:border-gray-700" placeholder="Your email" required>
+                            </div>
+                            
+                            <div class="mb-4">
+                                <label for="subject" class="block mb-2 font-medium">Subject</label>
+                                <input type="text" id="subject" class="w-full px-4 py-2 rounded-lg border focus:outline-none focus:ring-2 focus:ring-primary text-base dark:bg-gray-800 dark:border-gray-700" placeholder="Subject">
+                            </div>
+                            
+                            <div class="mb-6">
+                                <label for="message" class="block mb-2 font-medium">Message</label>
+                                <textarea id="message" rows="4" class="w-full px-4 py-2 rounded-lg border focus:outline-none focus:ring-2 focus:ring-primary text-base dark:bg-gray-800 dark:border-gray-700" placeholder="Your message" required></textarea>
+                            </div>
+                            
+                            <button type="submit" class="btn btn-primary w-full">Send Message</button>
+                        </form>
+                        
+                        <div id="form-status" class="mt-4 text-center hidden">
+                            <p id="status-message" class="font-medium"></p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- Footer -->
+    <footer class="py-8 px-4 text-center bg-gray-100 dark:bg-gray-800">
+        <div class="container mx-auto">
+            <p class="mb-4">&copy; 2025 Patrick Zablon. All rights reserved.</p>
+            <div class="flex justify-center space-x-4">
+                <a href="https://github.com/iamricky17" target="_blank" class="text-gray-600 dark:text-gray-300 hover:text-primary transition-colors">
+                    <i class="fab fa-github"></i>
+                </a>
+                <a href="https://www.linkedin.com/in/patrick-zablon/" target="_blank" class="text-gray-600 dark:text-gray-300 hover:text-primary transition-colors">
+                    <i class="fab fa-linkedin-in"></i>
+                </a>
+                <a href="mailto:patrickzablon0@gmail.com" class="text-gray-600 dark:text-gray-300 hover:text-primary transition-colors">
+                    <i class="fas fa-envelope"></i>
+                </a>
+            </div>
+        </div>
+    </footer>
+
+    <script src='assets/js/main.js'></script>
+</body>
+</html>
